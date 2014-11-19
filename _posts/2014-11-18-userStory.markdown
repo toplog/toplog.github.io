@@ -19,7 +19,7 @@ What the heck, a file doesn't exist so no my user can't login?  What happened to
 
 And thus the digging, the asking and the solution.  First, the easy one, bring back the file, the second, find the dev that wrote `compiled.php line 9016` and start chatting about what the decision process was here, why, why , why, etc.   And then, we fix, and hope things stay working for a while.
 
-You;ll notice I said "used to", now I get this in my inbox:
+You'll notice I said "used to", now I get this in my inbox:
 
 `Notice: New pattern has shown up, it reads: ElasticSearch query failed to IP * on run *`
 
