@@ -13,10 +13,6 @@ logo: "/assets/images/df_logo.jpg"
 # blog cover
 cover: "/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg"
 
-name: 'Patrick LaRoche'
-author: 'Patrick LaRoche'
-author_image: "/assets/images/author.jpg"
-
 paginate:	5
 
 url: "http://blog.toplog.io" # the base hostname & protocol for your site
@@ -51,3 +47,25 @@ social:
 #    share_url:
 #    share_title:
 #    share_link:
+
+
+authors:
+  matt:
+    display_name: Matt Hackett
+    gravatar: 60fd5218fff6927c0ed376cce01c5460
+    email: matt@lostdecadegames.com
+    web: http://www.richtaur.com/
+    twitter: richtaur
+    github: richtaur
+  geoff:
+    display_name: Geoff Blair
+    gravatar: 76dbcc74021b8039f14c7b583978b56d
+    email: geoff@lostdecadegames.com
+    web: http://www.geoffblair.com/
+    twitter: geoffblair
+    github: geoffb
+  patrick:
+    display_name: Patrick LaRoche
+    email: patrick@toplog.io
+    twitter: plaroche
+    github: PLaRoche
