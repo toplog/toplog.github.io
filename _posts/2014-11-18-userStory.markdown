@@ -3,7 +3,7 @@ layout: post
 title:  "TopLog User Story"
 date:   2014-11-18 20:49:27
 categories: story user
-tags: featured
+tags: 
 author: patrick
 
 ---
