@@ -7,7 +7,9 @@ title: "topLog Log Blog"
 description: > # this means to ignore newlines until "email:"
    TopLog's Blog about Logs
 
-#email: patrick@toplog.io
+name: "topLog Inc"
+author: "topLog Inc"
+email: team@toplog.io
 #blog logo
 logo: "/assets/images/df_logo.jpg"
 # blog cover
@@ -15,7 +17,7 @@ cover: "/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg"
 
 paginate:	5
 
-url: "http://blog.toplog.io" # the base hostname & protocol for your site
+url: "http://toplog.github.io" # the base hostname & protocol for your site
 baseurl: ""
 
 # social icons and sharing options

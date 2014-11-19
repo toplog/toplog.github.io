@@ -1,3 +1,14 @@
+
+## TopLogs dev blog
+
+__WIP__
+
+To get running locally on a mac:
+`bundle exec jekyll serve`
+
+
+##Theme readme:
+
 mediator
 ========
 
