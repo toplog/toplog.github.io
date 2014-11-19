@@ -17,6 +17,11 @@ cover: "/assets/images/wood-bg.png"
 
 paginate:	5
 
+analytics :
+  provider : google
+  google :
+      tracking_id : 'UA-56068240-1'
+
 url: "http://toplog.github.io" # the base hostname & protocol for your site
 baseurl: ""
 
