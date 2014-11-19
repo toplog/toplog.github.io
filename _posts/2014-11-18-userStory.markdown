@@ -5,6 +5,8 @@ date:   2014-11-18 20:49:27
 categories: story user
 tags: 
 author: patrick
+description: "How to get ahead of your product breaking via logs"
+share: true
 
 ---
 ## User Story: "Can't log in"
