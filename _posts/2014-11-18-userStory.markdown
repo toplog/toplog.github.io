@@ -11,7 +11,7 @@ share: true
 ---
 ## User Story: "Can't log in"
 
-As CTO / Dev Manager / Cheif "put out the fire" person, I used to get a lot of these:
+As CTO / Dev Manager / Chief "put out the fire" person, I used to get a lot of these:
 
 "Websites slow" or "Can't login" or "my run failed" (we deal with data analytics).  And you can guess the first thing I do is go look, then, I dig into the logs... and I find this....
 
