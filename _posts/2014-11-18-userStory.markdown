@@ -17,7 +17,7 @@ As CTO / Dev Manager / Cheif "put out the fire" person, I used to get a lot of t
 
 What the heck, a file doesn't exist so no my user can't login?  What happened to it?  Why is this even required?
 
-And thus the digging, the asking and the solution.  First, the easy one, bring back the file, the second, find the dev that wrote `compiled.php line 9016` and start chatting about what the decision process was here, why, why , why, etc.   And then, we fix, and hope things stay working for a while.
+And thus the digging, the asking and then (hopefully) the solution.  First, the easy one, bring back the file, the second, find the dev that wrote `compiled.php line 9016` and start chatting about what the decision process was here, why, why , why, etc.   And then, we fix, and hope things stay working for a while.
 
 You'll notice I said "used to", now I get this in my inbox:
 
@@ -25,6 +25,6 @@ You'll notice I said "used to", now I get this in my inbox:
 
 And instead of waiting to get an email from a new customer saying "I can't see my resuts", I can start the process ahead of them seeing it.  I can see the log line immediatly, what log lines happened before it or are related.  And we can solve it before the user sees the problem.
 
-I can put the damn filetmp.tmp file back before they can't log in, and then, I can ask the dev in question, "why is this required".
+I can put the silly filetmp.tmp file back before they can't log in, and then, I can ask the dev in question, "why is this required".
 
 So, who else has fealt the pain of something breaking, digging through logs, and hoping you can find the problem fast enough that very few people realize something has gone wrong?
