@@ -11,9 +11,9 @@ name: "topLog Inc"
 author: "topLog Inc"
 email: team@toplog.io
 #blog logo
-logo: "/assets/images/log-justlogs.png"
+logo: "/assets/images/2014.11.20.toplogbloglogo_360.png"
 # blog cover
-cover: "/assets/images/wood-bg.png"
+cover: "/assets/images/2014.11.20.sample_top_banner.png"
 
 paginate:	5
 
