@@ -17,7 +17,7 @@ cover: "/assets/images/2014.11.20.sample_top_banner.png"
 
 paginate:	5
 
-url: "http://toplog.github.io" # the base hostname & protocol for your site
+url: "http://blog.toplog.io" # the base hostname & protocol for your site
 baseurl: ""
 
 # social icons and sharing options
