@@ -70,7 +70,7 @@ Also [PuPHPet](https://puphpet.com/) is a pretty cool website that gives you a G
 
 We have a file called php.list that contains the paths and names of the php files we want to compile into bytecode.
 
-in /opt/toplog/toplog.main , run this command
+in the directory where that file is located , run this command
 
     hhvm --hphp -thhbc -o /path/to/hhvm.hhbc --input-list /path/to/php.list
 
