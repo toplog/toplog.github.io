@@ -1,18 +1,28 @@
 ---
 layout: post
-title:  "HHVM"
-date:   2014-11-18 20:49:27
+title:  "HHVM Guide"
+date:   2014-11-21 13:18:27
 categories: story user
-tags: laravel, hhvm, puppet, ubuntu
+tags: hhvm, laravel, puppet, vagrant, ubuntu
 author: yalcin
-description: "How to get ahead of your product breaking via logs"
+description: "How to get your code running on HHVM straight from the bytecode"
 share: true
-
 ---
-##HHVM
 
-####**A Little Background**
-HHVM is an open-source virtual machine developed by Facebook for executing programs in PHP and their own programming language Hack. HHVM compiles PHP into an intermediate bytecode, then translates it into x64 machine code dynamically at runtime using a just-in-time compiler.
+In the beginning I started digging deeper into the world of HHVM to see if we could run topLog using HHVM, and if so, what the performance be like. I have come across some challenges that led me to write this article.
+
+topLog has two main components; we are using Laravel as our framework for the UI side of things and we have our proprietary topLog engine sitting in the back-end that makes all the magic happen and it is being called from front-end.
+
+--->>> Talk about the problems encountered and list them
+--->>> Walk through the steps starting from installing hhvm to bytecode stuff
+--->>> Talk about major problems encountered and how to solve them if possible
+ 
+####**A Little Background on HHVM**
+[HHVM](http://hhvm.com/) is an open-source virtual machine developed by Facebook for executing programs in PHP and their own programming language Hack. HHVM compiles PHP into an intermediate bytecode, then translates it into x64 machine code dynamically at runtime using a just-in-time compiler.
+
+->>Put diagram here
+
+explain the diagram a little 
 
 ####**Installing HHVM using Vagrant Box - Ubuntu 12.04**
 This is a very straightforward and inelegant way to install hhvm but it works if you just want to try outg the hhvm in a quick and dirty way. Here I am using the prebuilt package for Ubuntu 12.04 . You can just put this code in your Vagrantfile within configuration. For different prebuilt packages of Ubuntu or different Linux distro's you can [check out this link](https://github.com/facebook/hhvm/wiki/Prebuilt%20Packages%20for%20HHVM) and modify the code snippet for your Vagrantfile accordingly.
@@ -40,8 +50,12 @@ You can php files just  like the original PHP itself. You can create a hello wor
 		
 	$ hhvm helloWorld.php
 	
-There are also couple of useful commands
- $ 
+There are also couple of useful commands:
+
+	$ sudo /usr/bin/update-alternatives --install /usr/bin/php php /usr/bin/hhvm 60
+ 
+	$ sudo /etc/init.d/hhvm restart
+
 ####**Puppet**
 If you are using puppet to deploy your vagrant-managed virtual machines,
 there are a few repos that include hhvm that you can potentially learn from:
@@ -72,3 +86,6 @@ After our box is up and our code is compiled, we need to create a configuration 
 	    Path = /path/to/hhvm.hhbc
 	  }
 	}
+
+
+A common implementation of JIT compilation is to first have AOT (Ahead of Time) compilation to bytecode (virtual machine code), known as bytecode compilation, and then have JIT compilation to machine code (dynamic compilation), rather than interpretation of the bytecode - put this where appropriate
