@@ -9,13 +9,19 @@ description: "How to get your code running on HHVM straight from the bytecode"
 share: true
 ---
 
+
 In the beginning I started digging deeper into the world of HHVM to see if we could run topLog using HHVM, and if so, what the performance be like. I have come across some challenges that led me to write this article.
 
 topLog has two main components; we are using Laravel as our framework for the UI side of things and we have our proprietary topLog engine sitting in the back-end that makes all the magic happen and it is being called from front-end.
 
+I have encountered a lot of problems from making Laravel work on HHVM that includes virtualhost settings, setting up fastCGI to compiling the backend engine to bytecode and running it straight from the bytecode without requiring the source files.
+
+I will be going step by step starting by giving a brief introduction to HHVM. There isn't anything new or revolutionary in this blog. I just put together all the useful and up-to-date information I came across while experimenting with HHVM for convenience. All the resources I used can be found at the end of the post.
+
 --->>> Talk about the problems encountered and list them
 --->>> Walk through the steps starting from installing hhvm to bytecode stuff
 --->>> Talk about major problems encountered and how to solve them if possible
+ 
  
 ####**A Little Background on HHVM**
 [HHVM](http://hhvm.com/) is an open-source virtual machine developed by Facebook for executing programs in PHP and their own programming language Hack. HHVM compiles PHP into an intermediate bytecode, then translates it into x64 machine code dynamically at runtime using a just-in-time compiler.
@@ -23,6 +29,9 @@ topLog has two main components; we are using Laravel as our framework for the UI
 ->>Put diagram here
 
 explain the diagram a little 
+
+
+A common implementation of JIT compilation is to first have AOT (Ahead of Time) compilation to bytecode (virtual machine code), known as bytecode compilation, and then have JIT compilation to machine code (dynamic compilation), rather than interpretation of the bytecode - put this where appropriate
 
 ####**Installing HHVM using Vagrant Box - Ubuntu 12.04**
 This is a very straightforward and inelegant way to install hhvm but it works if you just want to try outg the hhvm in a quick and dirty way. Here I am using the prebuilt package for Ubuntu 12.04 . You can just put this code in your Vagrantfile within configuration. For different prebuilt packages of Ubuntu or different Linux distro's you can [check out this link](https://github.com/facebook/hhvm/wiki/Prebuilt%20Packages%20for%20HHVM) and modify the code snippet for your Vagrantfile accordingly.
@@ -86,6 +95,3 @@ After our box is up and our code is compiled, we need to create a configuration 
 	    Path = /path/to/hhvm.hhbc
 	  }
 	}
-
-
-A common implementation of JIT compilation is to first have AOT (Ahead of Time) compilation to bytecode (virtual machine code), known as bytecode compilation, and then have JIT compilation to machine code (dynamic compilation), rather than interpretation of the bytecode - put this where appropriate
