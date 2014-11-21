@@ -1,0 +1,74 @@
+---
+layout: post
+title:  "HHVM"
+date:   2014-11-18 20:49:27
+categories: story user
+tags: laravel, hhvm, puppet, ubuntu
+author: yalcin
+description: "How to get ahead of your product breaking via logs"
+share: true
+
+---
+##HHVM
+
+####**A Little Background**
+HHVM is an open-source virtual machine developed by Facebook for executing programs in PHP and their own programming language Hack. HHVM compiles PHP into an intermediate bytecode, then translates it into x64 machine code dynamically at runtime using a just-in-time compiler.
+
+####**Installing HHVM using Vagrant Box - Ubuntu 12.04**
+This is a very straightforward and inelegant way to install hhvm but it works if you just want to try outg the hhvm in a quick and dirty way. Here I am using the prebuilt package for Ubuntu 12.04 . You can just put this code in your Vagrantfile within configuration. For different prebuilt packages of Ubuntu or different Linux distro's you can [check out this link](https://github.com/facebook/hhvm/wiki/Prebuilt%20Packages%20for%20HHVM) and modify the code snippet for your Vagrantfile accordingly.
+
+		config.vm.provision "shell", inline: <<-shell
+			sudo apt-get update
+			sudo apt-get install -y software-properties-common python-software-properties --fix-missing
+			sudo apt-get update
+			sudo add-apt-repository -y ppa:mapnik/boost
+			sudo apt-get update
+			sudo apt-get install -y libboost1.49-dev libboost-regex1.49-dev \
+			  libboost-system1.49-dev libboost-program-options1.49-dev \
+			  libboost-filesystem1.49-dev libboost-thread1.49-dev
+			wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | sudo apt-key add -
+			echo deb http://dl.hhvm.com/ubuntu precise main | sudo tee /etc/apt/sources.list.d/hhvm.list
+			sudo apt-get update
+			sudo apt-get install -y hhvm
+  		shell
+
+After our box is up running, here is the first thing to do to see if HHVM was installed correctly:
+	
+	$ hhvm --version
+
+You can php files just  like the original PHP itself. You can create a hello world php file and run it using the command:
+		
+	$ hhvm helloWorld.php
+	
+There are also couple of useful commands
+ $ 
+####**Puppet**
+If you are using puppet to deploy your vagrant-managed virtual machines,
+there are a few repos that include hhvm that you can potentially learn from:
+
+https://github.com/adyromantika/vagrant-hhvm
+https://github.com/craigcarnell/puppet-hhvm
+
+Also [PuPHPet](https://puphpet.com/) is a pretty cool website that gives you a GUI to set up a virtual machine from scratch. (with HHVM too, of course)
+
+
+####**Compiling the backend**
+
+We have a file called php.list that contains the paths and names of the php files we want to compile into bytecode.
+
+in /opt/toplog/toplog.main , run this command
+
+    hhvm --hphp -thhbc -o /path/to/hhvm.hhbc --input-list /path/to/php.list
+
+This command will compile the php files into bytecode and store it in a database created in the folder specified. In this case, we should have /path/to/database/hhvm.hhbc 
+
+####**Configuration**
+
+After our box is up and our code is compiled, we need to create a configuration file config.hdf in /etc/hhvm/ folder and paste this:
+
+	Repo {
+	  Central {
+	    Authoritative = true
+	    Path = /path/to/hhvm.hhbc
+	  }
+	}
