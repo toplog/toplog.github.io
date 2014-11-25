@@ -14,13 +14,9 @@ In the beginning I started digging deeper into the world of HHVM to see if we co
 
 topLog has two main components; we are using Laravel as our framework for the UI side of things and we have our proprietary topLog engine sitting in the back-end that makes all the magic happen and it is being called from front-end.
 
-I have encountered a lot of problems from making Laravel work on HHVM that includes virtualhost settings, setting up fastCGI to compiling the backend engine to bytecode and running it straight from the bytecode without requiring the source files.
+I have encountered a lot of problems ranging from making Laravel work on HHVM including virtualhost settings, setting up fastCGI to compiling the backend engine to bytecode and running it straight from the bytecode without requiring the source files.
 
 I will be going step by step starting by giving a brief introduction to HHVM. There isn't anything new or revolutionary in this blog. I just put together all the useful and up-to-date information I came across while experimenting with HHVM for convenience. All the resources I used can be found at the end of the post.
-
---->>> Talk about the problems encountered and list them
---->>> Walk through the steps starting from installing hhvm to bytecode stuff
---->>> Talk about major problems encountered and how to solve them if possible
  
  
 ####**A Little Background on HHVM**
@@ -55,15 +51,24 @@ After our box is up running, here is the first thing to do to see if HHVM was in
 	
 	$ hhvm --version
 
-You can php files just  like the original PHP itself. You can create a hello world php file and run it using the command:
+You can run php files just  like the original PHP itself. You can create a hello world php file and run it using the command:
 		
 	$ hhvm helloWorld.php
 	
-There are also couple of useful commands:
+There are also couple of useful stuff:
+
+If you want to start hhvm on boot:
+
+	$ sudo update-rc.d hhvm defaults
+
+If you want to override php cli:
 
 	$ sudo /usr/bin/update-alternatives --install /usr/bin/php php /usr/bin/hhvm 60
+
+To restart hhvm:
  
 	$ sudo /etc/init.d/hhvm restart
+
 
 ####**Puppet**
 If you are using puppet to deploy your vagrant-managed virtual machines,
@@ -87,11 +92,19 @@ This command will compile the php files into bytecode and store it in a database
 
 ####**Configuration**
 
-After our box is up and our code is compiled, we need to create a configuration file config.hdf in /etc/hhvm/ folder and paste this:
+After our box is up and our code is compiled, we need to create a configuration file config.hdf in /etc/hhvm/ folder and paste this to be able to run your code straight from the bytecode:
 
 	Repo {
+	  Authoritative = true
 	  Central {
-	    Authoritative = true
 	    Path = /path/to/hhvm.hhbc
 	  }
 	}
+
+[Check here](https://github.com/facebook/hhvm/wiki/Runtime-options) for the rest of the configurations.
+
+If you encounter the error below, it is very likely that your repo does not have the right permissions. Make sure it has the correct user:group setting and permissions.
+
+	Failed to initialize central HHBC repository at '/path/to/hhvm.hhbc'
+
+
