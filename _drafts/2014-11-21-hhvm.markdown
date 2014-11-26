@@ -1,30 +1,34 @@
 ---
 layout: post
-title:  "HHVM Guide"
+title:  "Running PHP from bytecode - Using HHVM"
 date:   2014-11-21 13:18:27
 categories: story user
 tags: hhvm, laravel, puppet, vagrant, ubuntu
 author: yalcin
-description: "How to get your code running on HHVM straight from the bytecode"
+description: "Running a PHP from byte code, using HHVM"
 share: true
 ---
 
 
-In the beginning I started digging deeper into the world of HHVM to see if we could run topLog using HHVM, and if so, what the performance be like. I have come across some challenges that led me to write this article.
+_This is the first of series in which we describe how we managed to get our core technology to run as byte code instead of actual php.  This first installment in the sequence gives our motivate and highlights of how we accomplished this feat.  For detail guides and tips see the following installments in the series, we'll do our best to help others to set this up._
 
-topLog has two main components; we are using Laravel as our framework for the UI side of things and we have our proprietary topLog engine sitting in the back-end that makes all the magic happen and it is being called from front-end.
+Here at topLog our core technology is written in numerous languages, major parts of which is are in PHP, including components of the engine as well as the front end (Laravel, a framework that has been more then up to the challenge).  With the majority of our key technology being in PHP, naturally we wanted to dig into what HHVM could do for us.  We suspected two things; first, that it would potentially give us a speed boost "for free", secondly, maybe we can use it to save our core technology as byte code and use it for distribution to our on premise deployments instead of actual php code.  As the lead developed in this project, I came across some challenges that led me to write this article, the goal being to not only share what we learnt, but also to help anyone else who wants to do the same.
 
-I have encountered a lot of problems ranging from making Laravel work on HHVM including virtualhost settings, setting up fastCGI to compiling the backend engine to bytecode and running it straight from the bytecode without requiring the source files.
+<!-- I'm not sure if the voice should be "we" or "I"  I think when talking about toplog, it is we, then when talking  about how Yalcin, the author, overcame issues and did things, it should be I-->
 
-I will be going step by step starting by giving a brief introduction to HHVM. There isn't anything new or revolutionary in this blog. I just put together all the useful and up-to-date information I came across while experimenting with HHVM for convenience. All the resources I used can be found at the end of the post.
+Some of the first issues we  encountered ranged from how to make Laravel work using HHVM including virtualhost settings (we are deployed with Apache), setting up fastCGI, compiling the backend engine to bytecode, and finally running it the engine directly from the bytecode without requiring the source files at all.  The complete end model looks like the bellow diagram (roughly)
+
+<!-- Insert a picture of the entire end model -->
+
+I'll do my best to take you through each step of how we accomplished everything, including a brief introduction to HHVM. There isn't anything new or revolutionary in this blog. I just put together all the useful and up-to-date information I came across while experimenting with HHVM for convenience. All the resources I used can be found at the end of the post.
  
  
 ####**A Little Background on HHVM**
 [HHVM](http://hhvm.com/) is an open-source virtual machine developed by Facebook for executing programs in PHP and their own programming language Hack. HHVM compiles PHP into an intermediate bytecode, then translates it into x64 machine code dynamically at runtime using a just-in-time compiler.
 
-->>Put diagram here
+<!-- ->>Put diagram here -->
 
-explain the diagram a little 
+<!-- explain the diagram a little  -->
 
 
 A common implementation of JIT compilation is to first have AOT (Ahead of Time) compilation to bytecode (virtual machine code), known as bytecode compilation, and then have JIT compilation to machine code (dynamic compilation), rather than interpretation of the bytecode - put this where appropriate
