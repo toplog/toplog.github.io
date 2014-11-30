@@ -1,15 +1,16 @@
 ---
 layout: post
 title:  "TopLog User Story"
-date:   2014-11-18 20:49:27
+date:   2014-11-30 20:49:27
 categories: story user
-tags: 
+tags: user story
 author: patrick
 description: "How to get ahead of your product breaking via logs"
 share: true
 
 ---
 ## User Story: "Life as a CTO of a new startup"
+
 
 ####Problem: Customers Complaining That Your Web App Is Slow
 
