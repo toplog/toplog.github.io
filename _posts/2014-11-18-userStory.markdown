@@ -9,24 +9,55 @@ description: "How to get ahead of your product breaking via logs"
 share: true
 
 ---
-## User Story: "Can't log in"
+## User Story: "Life as a CTO of a new startup"
 
-As CTO / Dev Manager / Chief "put out the fire" person, I used to get a lot of these:
+####Problem: Customers Complaining That Your Web App Is Slow
 
-"Websites slow" or "Can't login" or "my run failed" (we deal with data analytics).  And you can guess the first thing I do is go look, then dig, and grep, into the logs... and I find this....
+If you're the CTO, DevOps Manager or the developer on call whose responsibility is to make sure your company's web app is up and running, you probably have gotten messages like this in your inbox (or as a tweet or on hackernews):
 
-`[2014-11-15 16:09:12] production.ERROR: exception 'UnexpectedValueException' with message 'The stream or file "tmp/filetmp.tmp" could not be opened: chmod(): Operation not permitted' in /var/bin/vendor/bootstrap/compiled.php:9016`
+“Your app is really slow - Customer X”
 
-What the heck, a file doesn't exist so none of our user can login?  What happened to it?  Why is this even required?
+This probably results in anything from a feeling of mild irritation to —if your company is strictly net-facing— a feeling of gut-churning panic. When your product has an issue and customers start complaining, it's hard to measure the loss in revenue but you know it can get bad… real bad. Attracting new customers is difficult at the best of times, and losing them happens all too easily.
 
-And thus more digging, then asking and then (hopefully) the solution.  First, the easy one, bring back the file, the second, find the dev that wrote the log line `compiled.php line 9016` and start chatting about what the decision process was here, why, why , why, etc.   And then, we fix, and hope things stay working for a while.
+Meanwhile, business reputation, customer loyalty and the effects on employee productivity are much harder quantities to calculate.
 
-You'll notice I said "used to", now I get this in my inbox:
+So while you may be the one who is panicking, this is the entire company's problem. Regardless of your sense of urgency, however, your options remain the same, and they're not particularly efficient.
 
-`Notice: New pattern has shown up, it reads: ElasticSearch query failed to IP * on run *`
+You'll probably start by checking out the app for yourself —yes, slow! Okay, so time to look through the logs… but what are you looking for?
 
-And instead of waiting to get an email from a new customer saying "I can't see my resuts" (if they bother to send it), I can start the process ahead, before the user experiences the break.  I can see the log line immediatly, what log lines happened before it and what is related.  Solving the problem pro-actively.
+Rooting around, eventually you find this fun line -just once- hidden among 10,000 other log lines from the past hour:
 
-I can put the silly filetmp.tmp file back before they can't log in, and then, I can ask the dev in question, "why is this required".
 
-Who else has fealt the pain of something breaking, digging through logs, and hoping you can find the problem fast enough that very few people realize something has gone wrong?  I doubt I'm the only one ;-) 
+`[03/Nov/2014:23:59:44 +0000] prod-worker1 1115 PROCESSLOG INFO analysis output: Warning: log() expects parameter 1 to be double, string given in foo.php on line 156 Warning: Division by zero in foo.php on line 156 Warning: log() expects parameter 1 to be double………`
+
+Okay, so there's some sort of back-end component getting a `divide by zero`? How come? And why is this resulting in some of the app being slow?
+
+Generally to answer these questions you have to find the needle in the haystack.  Finding the log entries are only easy to find when they are tagged as `ALERT` or `ERROR`. However, problems happen when the log lines creating the issue are not obviously tagged like that.
+
+Now you have to track down the developer who wrote the log line, find out what their decision process was,  and hope to get some insight into what caused the problem in the first place. 
+
+Was this error really the root cause? Are there other, related issues that caused the problem? And what lead to this? 
+
+All of this investigation takes time, and diverts you and your dev team away from your main job: developing the product.
+
+You don't want to waste time spinning your wheels. But that comes with the territory, right? You spend a lot of time putting out fires and trying to minimize the damage.
+
+
+####Solution: Pattern Detection and Alerting
+
+So what if —instead of those panicked error messages or customer complaint's— your inbox had an email showing this:
+
+    Warning, new pattern appeared in your logs:
+        * expects parameter * to be double, * given in * on line 156 Warning: Division by zero in *
+    
+    It was matched 6 times in the last 5 minutes.
+
+    Click to see your alert report.
+
+This is what topLog provides me (if you haven't guessed this is a thinly disguised actual example from our logs). The line is detected as a pattern never seen before in the logs, so topLog sends me a notification that I can act on immediately.
+
+Not only does it point me to the entries in the log that I need to see, I can view the corresponding abnormal behavior, helping me find the root cause. topLog offers real anomaly detection— telling me what to look for and where.
+
+By monitoring application logs, detecting patterns and notifying me of abnormalities as they happen I can approach my job pro-actively.
+
+
