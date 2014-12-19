@@ -2,8 +2,8 @@
 layout: post
 title:  "The Art Of Pattern Detection"
 date:   2014-11-30 20:49:27
-categories: story user
-tags: user story
+categories: DevOps, alerts
+tags: DevOps, testing, alerts
 author: patrick
 description: "How to get ahead of your product issues via logs"
 share: true
