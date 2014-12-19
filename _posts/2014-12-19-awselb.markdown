@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Laravel 4, AWS, HTTPS and ELBs"
-date:   2014-11-30 20:49:27
-categories: "tech tips", "amazon", "laravel"
-tags: "tech tips", "amazon", "laravel"
+date:   2014-11-30 10:18:00
+categories: tips amazon laravel
+tags: tech tips amazon laravel
 author: patrick
 description: "How to set up HTTPS redirect with an AWS Load Balancer, Apache and Laravel 4"
 share: true
