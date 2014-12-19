@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "Laravel 4, AWS, HTTPS and ELBs"
+date:   2014-11-30 20:49:27
+categories: "tech tips", "amazon", "laravel"
+tags: "tech tips", "amazon", "laravel"
+author: patrick
+description: "How to set up HTTPS redirect with an AWS Load Balancer, Apache and Laravel 4"
+share: true
+
+---
+## Laravel 4, AWS, HTTPS and ELBs (oh and Apache2, and maybe NGINX)
+
+
+####After spending 24hrs bumping my head against this, thought I would share...
+The goal, set up HTTPS redirect on our app site while having the web servers (apache2.4) sitting behind a load balancer (ELB).  The issue: Where to put the ssl stuff.
+
+Not pretending this is the only way, but this is working for us (and forgive me for skipping over some details, like security groups, ping me for more details and I'll post where I can):
+
+1. Get your SSL cert, have it all ready
+
+1. Make sure the VPC has an internet gateway attached
+
+2. Also, for, you know, redundancy, have subnets inside the VPC that span multimple AZs, have the Load Balancer span those as well
+
+3. Deploy your web servers (apache, nginx, whatever) across multiple AZs (or just set one up for testing then play with autoscaling later).  Set them up **without** https enabled.  The load balancer will do that.
+
+4. Now, set up the load balancer, have it do the ssl.  Have it set up to have listeners on port 80 and 443, redirect both to 80
+ 
+    http 80 -> http 80
+    https 443 -> http 80
+
+5. Set the health check to TCP port 80, just easier then http
+
+##### Apache: Not done yet, here comes the __trick__
+ 
+ As far as your apache server is concerned, it is just serving up http, no https, you need to do some redirecting, with AWS you need to do that via the web server.  On Apache, you need to add this to the bottom of your *:80 vhost conf file (or just your straight up httpd.conf if you are not using vhosts):
+
+    ##redirect
+
+    RewriteEngine On
+    RewriteCond      %{HTTP_USER_AGENT} !^ELB-HealthChecker
+    RewriteCond      %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule      ^(.*)$     https://%{SERVER_NAME}$1 [NC,R=301,L]
+
+(you may be able to replace `SERVER_NAME` with `HOST_NAME` if you don't have  `ServerName` set at the top of your conf file)
+
+**What this is doing:**
+
+1. Turn on the redirect: **Assumes mod_rewrite is enabled**
+2. Does not redirect if is the healthcheck of the elb, if you have this, you don't necesarily need to change the health check to TCP and could put in a http path.
+3. The ELB sets a header called `X-Forwarded-proto` and if it is equal to https, we don't want to redirect again (that would end in a never ending https redirect).
+4. Redirect everything else to https!
+
+
+Yay!  Redirect works.... BUT if you use Laravel 4, you will notice that all your assets (javascript, css, etc are not https).  (Side bar, oddly safari will surf this up, but chrome and firefox will make your page look likes its 1990 all over again).
+
+
+##### Laravel 4:
+
+You have one more step if you are using Laravel (modified from this tip [Laravel tricks](http://www.laravel-tricks.com/tricks/fix-ssl-in-laravel-4-when-server-is-behind-a-load-balancer-or-a-reverse-proxy))
+
+
+    // in your filters.php add the following inside App::before()
+
+    App::before( function( $request )
+    {
+        // set the current IP (REMOTE_ADDR) as a trusted proxy
+        Request::setTrustedProxies( [ $request->getClientIp() ] );
+        if ( App::environment() === "production")
+        {
+            if ( ! Request::secure())
+            {
+                return Redirect::secure(Request::path());
+            }
+        }
+    });
+
+
+In our case we use an environment to tell our app to use ssl redirects, you could also make that check to be for the `x-forwarded-proto`.  Something like (not verified)
+
+    Request::header('x-forwarded-proto') <> 'https'
+
+
+
+Now, you SHOULD have a working https redirect on your main site when hitting the public DNS entry for your load balancer.  Note: you won't get that redirect when hitting the server(s) directly, so make sure to disalllow that kind of behaviour (via security groups, for example).
+
+Hope this saves at least one person from the headache I had for the last bit of time.
+
+
