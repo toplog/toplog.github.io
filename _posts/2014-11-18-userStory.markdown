@@ -1,16 +1,14 @@
 ---
 layout: post
-title:  "TopLog User Story"
+title:  "The Art Of Pattern Detection"
 date:   2014-11-30 20:49:27
 categories: story user
 tags: user story
 author: patrick
-description: "How to get ahead of your product breaking via logs"
+description: "How to get ahead of your product issues via logs"
 share: true
 
 ---
-## User Story: "Life as a CTO of a new startup"
-
 
 ####Problem: Customers Complaining That Your Web App Is Slow
 
