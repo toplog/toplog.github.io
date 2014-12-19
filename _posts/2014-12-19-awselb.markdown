@@ -28,6 +28,7 @@ Not pretending this is the only way, but this is working for us (and forgive me 
 4. Now, set up the load balancer, have it do the ssl.  Have it set up to have listeners on port 80 and 443, redirect both to 80
  
  `http 80 -> http 80`
+
  `https 443 -> http 80`
 
 5. Set the health check to TCP port 80, just easier then http
