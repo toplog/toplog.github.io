@@ -11,7 +11,7 @@ share: true
 ---
 
 
-### Quick example from yesterday ###
+### Quick example: caught bug to action in under an hour ###
 
 This morning I get a notification from topLog:
 
