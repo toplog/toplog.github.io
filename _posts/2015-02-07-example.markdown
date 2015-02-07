@@ -5,7 +5,7 @@ date:   2015-01-07 10:18:00
 categories: logs tips
 tags: logs tip
 author: patrick
-description: "An example of how we use dev logs"
+description: "An example of how we use dev logs, "new pattern found" through to fixing the issue and talking to a customer on a Saturday morning.
 share: true
 
 ---
@@ -15,7 +15,7 @@ share: true
 
 This morning I get a notification from topLog:
 
-![My Email]({{ site.url }}/images/screenshot_2015-02-07.jpg)
+![My Email]({{ site.url }}/assets/images/screenshot_2015-02-07.jpg)
 
 
 You'll note in it is a couple new patterns.  What that means is topLog picked up a couple new log entries that had never shown up before.  This can happen for a couple reasons:
