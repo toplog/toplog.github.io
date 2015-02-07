@@ -1,0 +1,42 @@
+---
+layout: post
+title:  "Example on how to use dev logs"
+date:   2015-01-07 10:18:00
+categories: logs tips
+tags: logs tip
+author: patrick
+description: "An example of how we use dev logs"
+share: true
+
+---
+
+
+### Quick example from yesterday ###
+
+This morning I get a notification from topLog:
+
+![My Email]({{ site.url }}/images/screenshot_2015-02-07.jpg)
+
+
+You'll note in it is a couple new patterns.  What that means is topLog picked up a couple new log entries that had never shown up before.  This can happen for a couple reasons:
+
+1. We just pushed new code and it contained new log lines
+2. A case / scenario that we had anticipated but had never happened just occured.
+
+
+In both, I should probably investigate (simply click on the link in the email and it sends me to a search result page showing the actual log lines that triggered the new pattern).
+
+In this particular example, the pattern ```production.ERROR: exception 'ErrorException' with message 'array_combine(): Both`` is an exception being caught that we had never had before.  I immediatly posted this as an issue in github, mentioing it on our slack channel for bugs, and have someone working on it immediatly.  I've also reached out to the user (found via the log search link) to see let them know we had a small snafu when dealing with their log stream.  
+
+Turns out they didn't even notice (it is Saturday morning after all), and were happy to know we were paying attention and were ahead of them on the fixing it.
+
+#### Take away ####
+
+- make sure that your exceptions log is important, for either reactive log management (searching for the words like error afterwards, but how often do people do that) or proactive tools like toplog.
+- having a quick way to triage and manage any new event is important (mental note: add a way that I can post an issue / to slack off of a pattern within the platform, that woudl be cool)
+- Paying attention on a Saturday helps customer Satisfaction.
+
+So, get your products logging, put it somewhere and don't just sit back and relax, pay attention to it (or get us to).
+
+-Patrick
+

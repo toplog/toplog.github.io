@@ -17,7 +17,7 @@ cover: "/assets/images/2014.11.20.sample_top_banner.png"
 
 paginate:	5
 
-url: "http://blog.toplog.io" # the base hostname & protocol for your site
+url: "http://devblog.toplog.io" # the base hostname & protocol for your site
 baseurl: ""
 
 # social icons and sharing options
@@ -69,6 +69,8 @@ authors:
   patrick:
     display_name: Patrick LaRoche
     email: patrick@toplog.io
+    gravatar: patrick_slavatar.jpg
+    author_image: patrick_slavatar.jpg
     twitter: plaroche
     github: PLaRoche
   yalcin:
