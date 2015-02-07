@@ -26,7 +26,7 @@ You'll note in it is a couple new patterns.  What that means is topLog picked up
 
 In both, I should probably investigate (simply click on the link in the email and it sends me to a search result page showing the actual log lines that triggered the new pattern).
 
-In this particular example, the pattern ```production.ERROR: exception 'ErrorException' with message 'array_combine(): Both`` is an exception being caught that we had never had before.  I immediatly posted this as an issue in github, mentioing it on our slack channel for bugs, and have someone working on it immediatly.  I've also reached out to the user (found via the log search link) to see let them know we had a small snafu when dealing with their log stream.  
+In this particular example, the pattern ```production.ERROR: exception 'ErrorException' with message 'array_combine(): Both`` is an exception being caught that we had never had before.  I immediatly posted this as an issue in github, mentioning it on our slack channel for bugs, and have someone working on it immediatly.  I've also reached out to the user (found via the log search link) to see let them know we had a small snafu when dealing with their log stream.  
 
 Turns out they didn't even notice (it is Saturday morning after all), and were happy to know we were paying attention and were ahead of them on the fixing it.
 
