@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "GIT Push and Puppet Master"
-date:   2014-02-20 16:00:00
+date:   2015-02-20 16:00:00
 categories: DevOps, puppet, git
 tags: DevOps, puppet, git
 author: patrick
