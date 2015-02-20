@@ -2,8 +2,8 @@
 layout: post
 title:  "GIT Push and Puppet Master"
 date:   2015-02-20 16:00:00
-categories: DevOps, puppet, git
-tags: DevOps, puppet, git
+categories: DevOps puppet git
+tags: DevOps puppet git
 author: patrick
 description: "How to set up a remote git repo for puppetmaster"
 share: true
