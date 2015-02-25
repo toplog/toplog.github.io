@@ -83,32 +83,42 @@ https://github.com/craigcarnell/puppet-hhvm
 
 Also [PuPHPet](https://puphpet.com/) is a pretty cool website that gives you a GUI to set up a virtual machine from scratch. (with HHVM too, of course)
 
+#### Compiling the Engine
 
-####**Compiling the backend**
+We use a shell script to handle compilation of all required PHP code into bytecode and store it in the HHVM database. The following script installs all dependencies, creates a list of all files to be compiled, and compiles the code into the HHVM database file and puts in a directory called `builds`.
 
-We have a file called php.list that contains the paths and names of the php files we want to compile into bytecode.
+```
+#!/bin/bash
 
-in /opt/toplog/toplog.main , run this command
+rm -rf vendor
 
-    hhvm --hphp -thhbc -o /path/to/hhvm.hhbc --input-list /path/to/php.list
+composer install
 
-This command will compile the php files into bytecode and store it in a database created in the folder specified. In this case, we should have /path/to/database/hhvm.hhbc 
+find * -name '*.php' -type f -print > ./hhvm_compilable_files
 
-####**Configuration**
+hhvm --hphp -t hhbc -o ./builds --program toplog_engine.hhbc --input-list ./hhvm_compilable_files
+    
+rm ./hhvm_compilable_files
+```
 
-After our box is up and our code is compiled, we need to create a configuration file config.hdf in /etc/hhvm/ folder and paste this to be able to run your code straight from the bytecode:
+Once the build is complete, the HHVM database file can be moved to the path specified in the HHVM configuration file as shown in the proceeding section.
 
-	Repo {
-	  Authoritative = true
-	  Central {
-	    Path = /path/to/hhvm.hhbc
-	  }
-	}
+#### Engine Configuration
 
-[Check here](https://github.com/facebook/hhvm/wiki/Runtime-options) for the rest of the configurations.
+Once our box is up and code is compiled, we use a configuration file in `/etc/hhvm/` to tell HHVM to use our bytecode database file. The configuration file has many options, which can be viewed [here](https://github.com/facebook/hhvm/wiki/Runtime-options). Our configuration looks like the following:
 
-If you encounter the error below, it is very likely that your repo does not have the right permissions. Make sure it has the correct user:group setting and permissions.
+```
+Repo {
+  # When true, hhvm executes everything straight from the bytecode database.
+  Authoritative = true
 
-	Failed to initialize central HHBC repository at '/path/to/hhvm.hhbc'
+  Central {
+    # The location of the bytecode database.
+    Path = /opt/hhvm/toplog_engine.hhbc
+  }
+}
 
-
+Eval {
+  Jit = true
+}
+```
