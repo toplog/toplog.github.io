@@ -1,0 +1,97 @@
+---
+layout: post
+title:  "5 Lessons learnt about logs"
+date:   2015-03-28 08:00:00
+categories: DevOps, alerts
+tags: DevOps, testing, alerts
+author: patrick
+description: "Lessons we have learnt from our users about logging"
+share: true
+
+---
+#Logging Ain't Easy... or Is It?
+## 5 Lessons We Learned About Logging ##
+
+At topLog, not surprisingly, we deal with A LOT of logs; including our own, and our customers'. 
+
+It's safe to say we've seen both ends of the spectrum, examples of logging that's been done exceptionally well, and... examples where that wasn't quite the case.
+
+Lucky for you, I've compiled some tips and tricks we share with our customers and live by ourselves, so enjoy a few best practices on how to make logging easier:
+
+### 1) Timestamps, so many...
+I don't know why the world of programming can't pick one timestamp and stick with it, but for the sake of consistency your format should include:
+
+- time in 24 hour clock: hours, minutes and seconds (if you need milliseconds, it helps to sort out if order of ties was actual sequence of ordering)
+- day / month / year -- so simple: 2 digits, 3 characters, 4 digits. Why must we all [argue](http://en.wikipedia.org/wiki/Date_format_by_country)...
+- ADD your timezone as +0200 or -0100, so so easy.  It will change with daylight savings time (again, [why](http://www.timeanddate.com/time/dst/history.html)... )
+
+Example: ``[08/Feb/2015:06:33:18 +0000]``  (this is Apache logs default. **Use It**).
+
+
+
+### 2) Pick a delimiter and be consistent
+Having a log that uses quotes in some instances, [ ] in others, and sometimes spaces, complicates things; and as a result makes it:
+
+- harder for you to read by hand
+- harder to use tools like grep and Awk to search through and break apart
+- really, really hard for tools like ours to parse the columns
+
+What's our favourite format you ask? 
+
+Probably [ ] brackets, with a space between (makes it easier to find visually). A lot of log types will wrap their timestamp in [ ] but will leave the rest as space delimited, or, even worse, quote delimited.  Why not just wrap all the columns in [ ] ?
+
+
+###3) What about JSON?
+Okay, fair warning, controversy coming.... 
+
+Some logging products love for you to have things in JSON, as it defines what the column headers are in each line.  It also lets you change your logging schema on the fly.  
+
+I get it, it's nice to have.  It also means:
+
+- lots of extra text for no reason (yes, it compresses well)
+- letting developers have that kind of flexibility in what goes into the log line can lead to a very big problem, **very** inconsistent logs
+
+What we do internally, and recommend, is we have a strict definition of what the first X columns are:
+
+``[timestamp] [hostname] [process] [message]``
+
+The ``[message]`` is simply the message the developer has chosen to write out to the log, the other components of the line are automatically written by our logging class. This results in every line always having values for some key details (timestamp, hostname and process id), then a variable message component made relevant to the code.
+
+###4) How much to log?
+We leverage standard logging levels and basically have the following set up:
+
+- dev boxes: log all levels
+- staging: log slightly less (drop the debug and level)
+- production: info, critical, alert and emergency
+
+And yes, we log at production level, just not much. 
+
+Why? Well its nice to know when a bug crops up.  
+
+Our general philosophy at production level is that if it shows up here we want to know enough so we can go and recreate it back in staging or in a dev box; hence the need for at least notification level logs. 
+
+As to what to write at each level, we have tried to stay away from having too fine grained a logging system. [RFC 5424](http://tools.ietf.org/html/rfc5424) does define the levels, we try and stay as strict to this as possible.  
+
+
+For reference:
+```
+    0       Emergency: system is unusable
+    1       Alert: action must be taken immediately
+    2       Critical: critical conditions
+    3       Error: error conditions
+    4       Warning: warning conditions
+    5       Notice: normal but significant condition
+    6       Informational: informational messages
+    7       Debug: debug-level messages
+```
+###5) Parting Shots (err... Thoughts)
+Nobody gets it right all the time, what's important is being open to changing your processes and what you do as your product evolves; but make sure you DO log.  
+
+The amount of companies we talk to who respond with "we do console logging when we want to look" or "we only log in dev environments," typically don't have an answer to "what if your autoscaling gets triggered and you end up with 10x the normal node count, then they scale down, how will you know what caused the issue?" 
+
+But yes.. I'm perhaps biased ;-)
+
+Happy Logging,
+Patrick LaRoche
+Co-Founder
+
